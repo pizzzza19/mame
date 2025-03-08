@@ -7183,7 +7183,7 @@ ROM_START( kof96 ) /* MVS VERSION */
 	ROM_LOAD16_BYTE( "214-c8.c8", 0x1800001, 0x400000, CRC(fa1461ad) SHA1(6c71a7f08e4044214223a6bf80984582ab5e0328) ) /* Plane 2,3 */ /* TC5332205 */
 ROM_END
 
-ROM_START( kof96a ) /* An official MVS repaired version by SNK (bug fix) */
+ROM_START( kof96a ) /* An alternative MVS version repaired by SNK (bug fix) */
 	ROM_REGION( 0x300000, "maincpu", 0 ) /* Replaced to 4 EPROM without label */
 	ROM_LOAD16_WORD_SWAP( "214a.ep1", 0x000000, 0x080000, CRC(a6101486) SHA1(51357c216cc8e52fc4ecf5b2db4814e87d016132) )
 	ROM_LOAD16_WORD_SWAP( "214a.ep2", 0x080000, 0x080000, CRC(6abc7ae5) SHA1(1bcbed38ef1934a0701d1c95b30ffe63316f92a8) )
@@ -11969,7 +11969,7 @@ GAME( 1995, rbff1ka,    rbff1,    neobase,   neogeo,    mvs_led_state, empty_ini
 GAME( 1996, aof3,       neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "Art of Fighting 3 - The Path of the Warrior / Art of Fighting - Ryuuko no Ken Gaiden", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, aof3k,      aof3,     neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "Art of Fighting 3 - The Path of the Warrior (Korean release)", MACHINE_SUPPORTS_SAVE ) // no Japanese title / mode
 GAME( 1996, kof96,      neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 (NGM-214)", MACHINE_SUPPORTS_SAVE )
-GAME( 1996, kof96a,     kof96,    neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 REPAIRED (NGM-214*)", MACHINE_SUPPORTS_SAVE )
+GAME( 1996, kof96a,     kof96,    neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 ALTERNATIVE (NGM-214*)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, kof96h,     kof96,    neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 (NGH-214)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, ssideki4,   neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The Ultimate 11 - The SNK Football Championship / Tokuten Ou - Honoo no Libero", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, kizuna,     neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "Kizuna Encounter - Super Tag Battle / Fu'un Super Tag Battle", MACHINE_SUPPORTS_SAVE )
