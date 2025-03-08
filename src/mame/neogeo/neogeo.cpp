@@ -7183,6 +7183,34 @@ ROM_START( kof96 ) /* MVS VERSION */
 	ROM_LOAD16_BYTE( "214-c8.c8", 0x1800001, 0x400000, CRC(fa1461ad) SHA1(6c71a7f08e4044214223a6bf80984582ab5e0328) ) /* Plane 2,3 */ /* TC5332205 */
 ROM_END
 
+ROM_START( kof96a ) /* MVS alternative version repaired by SNK (bug fix) */ 
+	ROM_REGION( 0x300000, "maincpu", 0 ) /* EP1~EP4 are provided as EPROM without label */
+	ROM_LOAD16_WORD_SWAP( "214a.ep1", 0x000000, 0x080000, CRC(a6101486) SHA1(51357c216cc8e52fc4ecf5b2db4814e87d016132) )
+	ROM_LOAD16_WORD_SWAP( "214a.ep2", 0x080000, 0x080000, CRC(6abc7ae5) SHA1(1bcbed38ef1934a0701d1c95b30ffe63316f92a8) )
+	ROM_LOAD16_WORD_SWAP( "214a.ep3", 0x100000, 0x080000, CRC(a588dff4) SHA1(32d30bdf9b7bc9201b3930f5a0f126c79af97f3d) )
+	ROM_LOAD16_WORD_SWAP( "214a.ep4", 0x180000, 0x080000, CRC(6d6f17eb) SHA1(51f61c9a4215584493cf1dc37c4e307e1216626c) )
+	ROM_LOAD16_WORD_SWAP( "214a.p5",  0x200000, 0x100000, CRC(9f3c6bc9) SHA1(90370a2ad42421a533182569e63ab81822e37878) )
+
+	NEO_SFIX_128K( "214.s1", CRC(1254cbdb) SHA1(fce5cf42588298711a3633e9c9c1d4dcb723ac76) )
+
+	NEO_BIOS_AUDIO_128K( "214.m1", CRC(dabc427c) SHA1(b76722ed142ee7addceb4757424870dbd003e8b3) ) /* It is provided as EPROM without label */
+
+	ROM_REGION( 0xa00000, "ymsnd:adpcma", 0 )
+	ROM_LOAD( "214.v1", 0x000000, 0x400000, CRC(63f7b045) SHA1(1353715f1a8476dca6f8031d9e7a401eacab8159) )
+	ROM_LOAD( "214.v2", 0x400000, 0x400000, CRC(25929059) SHA1(6a721c4cb8f8dc772774023877d4a9f50d5a9e31) )
+	ROM_LOAD( "214.v3", 0x800000, 0x200000, CRC(92a2257d) SHA1(5064aec78fa0d104e5dd5869b95382aa170214ee) )
+
+	ROM_REGION( 0x2000000, "sprites", 0 )
+	ROM_LOAD16_BYTE( "214.c1", 0x0000000, 0x400000, CRC(7ecf4aa2) SHA1(f773c4c1f05d58dd37e7bb2ac1d1e0ec43998a71) )
+	ROM_LOAD16_BYTE( "214.c2", 0x0000001, 0x400000, CRC(05b54f37) SHA1(cc31653fe4cb05201fba234e080cb9c7a7592b1b) )
+	ROM_LOAD16_BYTE( "214.c3", 0x0800000, 0x400000, CRC(64989a65) SHA1(e6f3749d43be0afa9dad7b085cb782ba694252ca) )
+	ROM_LOAD16_BYTE( "214.c4", 0x0800001, 0x400000, CRC(afbea515) SHA1(ae875052728de33174827705646bd14cf3937b5c) )
+	ROM_LOAD16_BYTE( "214.c5", 0x1000000, 0x400000, CRC(2a3bbd26) SHA1(7c1a7e50a10a1b082e0d0d515c34135ee9f995ac) )
+	ROM_LOAD16_BYTE( "214.c6", 0x1000001, 0x400000, CRC(44d30dc7) SHA1(c8ae001e37224b55d9e4a4d99f6578b4f6eb055f) )
+	ROM_LOAD16_BYTE( "214.c7", 0x1800000, 0x400000, CRC(3687331b) SHA1(2be95caab76d7af51674f93884330ba73a6053e4) )
+	ROM_LOAD16_BYTE( "214.c8", 0x1800001, 0x400000, CRC(fa1461ad) SHA1(6c71a7f08e4044214223a6bf80984582ab5e0328) )
+ROM_END
+
 ROM_START( kof96h ) /* AES VERSION */
 	ROM_REGION( 0x300000, "cslot1:maincpu", ROMREGION_BE|ROMREGION_16BIT )
 	ROM_LOAD16_WORD_SWAP( "214-pg1.p1", 0x000000, 0x100000, CRC(bd3757c9) SHA1(35392a044117e46c088ff0fdd07d69a3faa4f96e) ) /* mask rom TC538200 */
@@ -11941,6 +11969,7 @@ GAME( 1995, rbff1ka,    rbff1,    neobase,   neogeo,    mvs_led_state, empty_ini
 GAME( 1996, aof3,       neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "Art of Fighting 3 - The Path of the Warrior / Art of Fighting - Ryuuko no Ken Gaiden", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, aof3k,      aof3,     neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "Art of Fighting 3 - The Path of the Warrior (Korean release)", MACHINE_SUPPORTS_SAVE ) // no Japanese title / mode
 GAME( 1996, kof96,      neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 (NGM-214)", MACHINE_SUPPORTS_SAVE )
+GAME( 1996, kof96a,     kof96,    neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 Repaired (NGM-214*)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, kof96h,     kof96,    neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The King of Fighters '96 (NGH-214)", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, ssideki4,   neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "The Ultimate 11 - The SNK Football Championship / Tokuten Ou - Honoo no Libero", MACHINE_SUPPORTS_SAVE )
 GAME( 1996, kizuna,     neogeo,   neobase,   neogeo,    mvs_led_state, empty_init, ROT0, "SNK", "Kizuna Encounter - Super Tag Battle / Fu'un Super Tag Battle", MACHINE_SUPPORTS_SAVE )
