@@ -37058,6 +37058,9 @@ visor
 @source:palm/palmz22.cpp
 palmz22
 
+@source:pc/agro.cpp
+agro
+
 @source:pc/asst128.cpp
 asst128
 
@@ -44332,6 +44335,9 @@ rvoicepc
 @source:skeleton/sacstate.cpp
 sacstate
 
+@source:skeleton/sammy_pachislo_z80.cpp
+ultracl3
+
 @source:skeleton/sansa_fuze.cpp
 sanfuze2
 
@@ -48256,6 +48262,11 @@ mrlo
 mrdofabr
 mrdobl
 yankeedo
+
+@source:universal/pachislo_z80.cpp
+crankyc
+thunderv
+versus
 
 @source:universal/sraider.cpp
 mrsdyna
