@@ -1117,7 +1117,7 @@ void dendego_state::machine_start()
 void taitojc_state::taitojc(machine_config &config)
 {
 	// basic machine hardware
-	M68040(config, m_maincpu, 10_MHz_XTAL*2); // 20MHz, clock source = CY7C991
+	M68040(config, m_maincpu, 10_MHz_XTAL*8); // 20MHz, clock source = CY7C991
 	m_maincpu->set_addrmap(AS_PROGRAM, &taitojc_state::taitojc_map);
 	m_maincpu->set_vblank_int("screen", FUNC(taitojc_state::vblank));
 	m_maincpu->set_addrmap(m68000_base_device::AS_CPU_SPACE, &taitojc_state::cpu_space_map);
