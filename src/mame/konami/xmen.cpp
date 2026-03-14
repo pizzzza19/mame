@@ -3,8 +3,7 @@
 
 /***************************************************************************
 
-X-Men
-
+Konami X-Men
 driver by Nicola Salmoria
 
 notes:
@@ -93,7 +92,8 @@ protected:
 	uint8_t m_layer_colorbase[3]{};
 	uint8_t m_sprite_colorbase = 0;
 	int32_t m_layerpri[3]{};
-	bool m_tilemap_select;
+	bool m_tilemap_select = false;
+	bool m_irq5_enable = false;
 
 	// devices
 	required_device<cpu_device> m_maincpu;
@@ -104,7 +104,6 @@ protected:
 	required_device<screen_device> m_screen;
 
 	void eeprom_w(offs_t offset, uint16_t data, uint16_t mem_mask = ~0);
-	void _18fa00_w(offs_t offset, uint16_t data, uint16_t mem_mask = ~0);
 
 	void base(machine_config &config);
 	void sound_hardware(machine_config &config);
@@ -114,10 +113,6 @@ private:
 	optional_memory_bank m_okibank;
 
 	required_ioport m_eeprom_out;
-
-	// misc
-	bool m_irq3_enable = false;
-	bool m_irq5_enable = false;
 
 	void sound_bankswitch_w(uint8_t data);
 
@@ -146,7 +141,7 @@ public:
 
 	void xmen6p(machine_config &config);
 
-	int frame_r();
+	int field_r() { return (m_screen->frame_number() & 1) ^ m_screen->vblank(); }
 
 protected:
 	virtual void video_start() override ATTR_COLD;
@@ -283,7 +278,7 @@ void xmen6p_state::screen_vblank(int state)
 	// rising edge
 	if (state)
 	{
-		int index = m_screen->frame_number() & 1;
+		int index = field_r();
 		bitmap_ind16 &renderbitmap = m_screen_bitmap[index];
 		rectangle cliprect = m_screen->cliprect();
 
@@ -297,7 +292,7 @@ void xmen6p_state::screen_vblank(int state)
 		index += m_tilemap_select ? 2 : 0;
 		for (int offset = 0; offset < (0xc000 / 2); offset++)
 		{
-			if (index == 0 || (offset != 0x1c00 && offset != 0x1c80 && offset != 0x1e80))
+			if ((index == 0 || (offset != 0x1c00 && offset != 0x1c80 && offset != 0x1e80)) && offset != 0x1d00)
 				m_k052109->write(offset, m_tilemap[index][offset] & 0x00ff);
 		}
 
@@ -358,7 +353,7 @@ void xmen_state::eeprom_w(offs_t offset, uint16_t data, uint16_t mem_mask)
 		// bit 4 is cs (active low)
 		m_eeprom_out->write(data, 0xff);
 
-		// bit 5 is enabled in IRQ3, disabled in IRQ5 (sprite DMA start?)
+		// bit 5 is enabled in IRQ3, disabled in IRQ5 (sprite DMA end)
 		m_irq5_enable = bool(BIT(data, 5));
 		if (!m_irq5_enable)
 			m_maincpu->set_input_line(5, CLEAR_LINE);
@@ -379,17 +374,6 @@ void xmen_state::eeprom_w(offs_t offset, uint16_t data, uint16_t mem_mask)
 			if (m_audiocpu)
 				m_audiocpu->set_input_line(0, HOLD_LINE);
 		}
-	}
-}
-
-void xmen_state::_18fa00_w(offs_t offset, uint16_t data, uint16_t mem_mask)
-{
-	if (ACCESSING_BITS_0_7)
-	{
-		// bit 2 is irq3 interrupt enable
-		m_irq3_enable = bool(BIT(data, 2));
-		if (!m_irq3_enable)
-			m_maincpu->set_input_line(3, CLEAR_LINE);
 	}
 }
 
@@ -414,7 +398,6 @@ void xmen_state::base_main_map(address_map &map)
 	map(0x10a00c, 0x10a00d).r(m_k053246, FUNC(k053247_device::k053246_r));
 	map(0x110000, 0x113fff).ram();
 	map(0x18c000, 0x197fff).rw(m_k052109, FUNC(k052109_device::read), FUNC(k052109_device::write)).umask16(0x00ff);
-	map(0x18fa00, 0x18fa01).w(FUNC(xmen_state::_18fa00_w));
 }
 
 void xmen_state::main_map(address_map &map)
@@ -471,7 +454,7 @@ void xmen6p_state::main_map(address_map &map)
 	map(0x110000, 0x113fff).ram();     // main RAM
 //  map(0x18c000, 0x197fff).w("k052109", FUNC(k052109_device:write)).umask16(0x00ff).share("tilemapleft");
 	map(0x18c000, 0x197fff).ram().share(m_tilemap[0]); // left screen
-	map(0x18fa00, 0x18fa01).w(FUNC(xmen6p_state::_18fa00_w));
+	map(0x18fa01, 0x18fa01).lw8(NAME([this] (uint8_t data) { m_k052109->write(0x1d00, data); })); // irq enable
 /*
     map(0x1ac000, 0x1af7ff).readonly();
     map(0x1ac000, 0x1af7ff).writeonly();
@@ -567,11 +550,6 @@ static INPUT_PORTS_START( xmen2p )
 	PORT_BIT( 0x10, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("eeprom", FUNC(eeprom_serial_er5911_device::cs_write))
 INPUT_PORTS_END
 
-int xmen6p_state::frame_r()
-{
-	return m_screen->frame_number() & 1;
-}
-
 static INPUT_PORTS_START( xmen6p )
 	PORT_START("P1_P3")
 	KONAMI16_LSB_UDLR(1, IPT_BUTTON3, IPT_COIN1 )
@@ -596,7 +574,7 @@ static INPUT_PORTS_START( xmen6p )
 	PORT_BIT( 0x1000, IP_ACTIVE_LOW, IPT_START5 ) // not verified
 	PORT_BIT( 0x2000, IP_ACTIVE_LOW, IPT_START6 ) // not verified
 	PORT_SERVICE_NO_TOGGLE( 0x4000, IP_ACTIVE_LOW )
-	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_READ_LINE_MEMBER(FUNC(xmen6p_state::frame_r))  // screen indicator?
+	PORT_BIT( 0x8000, IP_ACTIVE_HIGH, IPT_CUSTOM ) PORT_READ_LINE_MEMBER(FUNC(xmen6p_state::field_r)) // screen indicator?
 
 	PORT_START( "EEPROMOUT" )
 	PORT_BIT( 0x04, IP_ACTIVE_HIGH, IPT_OUTPUT ) PORT_WRITE_LINE_DEVICE_MEMBER("eeprom", FUNC(eeprom_serial_er5911_device::di_write))
@@ -622,7 +600,6 @@ void xmen_state::machine_start()
 	save_item(NAME(m_sprite_colorbase));
 	save_item(NAME(m_layer_colorbase));
 	save_item(NAME(m_layerpri));
-	save_item(NAME(m_irq3_enable));
 	save_item(NAME(m_irq5_enable));
 	save_item(NAME(m_tilemap_select));
 }
@@ -636,7 +613,6 @@ void xmen_state::machine_reset()
 	}
 
 	m_sprite_colorbase = 0;
-	m_irq3_enable = false;
 	m_irq5_enable = false;
 }
 
@@ -644,11 +620,12 @@ TIMER_DEVICE_CALLBACK_MEMBER(xmen_state::scanline)
 {
 	int const scanline = param;
 
-	if (scanline == 240 && m_irq3_enable) // vblank-out irq
-		m_maincpu->set_input_line(3, ASSERT_LINE);
-
-	if (scanline == 0 && m_irq5_enable && m_k053246->k053246_is_irq_enabled()) // sprite DMA irq?
-		m_maincpu->set_input_line(5, ASSERT_LINE);
+	if (scanline == 0)
+	{
+		// sprite DMA end irq
+		if (m_irq5_enable && m_k053246->k053246_is_irq_enabled())
+			m_maincpu->set_input_line(5, ASSERT_LINE);
+	}
 }
 
 void xmen_state::sound_hardware(machine_config &config)
@@ -704,6 +681,7 @@ void xmen_state::base(machine_config &config)
 	m_k052109->set_palette("palette");
 	m_k052109->set_screen(m_screen);
 	m_k052109->set_tile_callback(FUNC(xmen_state::tile_callback));
+	m_k052109->irq_handler().set_inputline(m_maincpu, M68K_IRQ_3);
 
 	K053246(config, m_k053246, 24_MHz_XTAL);
 	m_k053246->set_sprite_callback(FUNC(xmen_state::sprite_callback));
@@ -741,11 +719,11 @@ void xmen6p_state::xmen6p(machine_config &config)
 
 	m_screen->set_raw(24_MHz_XTAL / 4, 384, 0, 320-32, 264, 16, 240);
 	m_screen->set_screen_update(FUNC(xmen6p_state::screen_update<0>));
+	m_screen->screen_vblank().set(FUNC(xmen6p_state::screen_vblank));
 
 	screen_device &screen2(SCREEN(config, "screen2", SCREEN_TYPE_RASTER));
 	screen2.set_raw(24_MHz_XTAL / 4, 384, 0+32, 320, 264, 16, 240);
 	screen2.set_screen_update(FUNC(xmen6p_state::screen_update<1>));
-	screen2.screen_vblank().set(FUNC(xmen6p_state::screen_vblank));
 	screen2.set_palette("palette");
 
 	m_k053246->set_screen(m_screen);

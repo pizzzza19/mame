@@ -213,10 +213,10 @@ protected:
 	inline void i_popf();
 
 	// sub implementations
-	inline uint32_t ADDB();
-	inline uint32_t ADDX();
-	inline uint32_t SUBB();
-	inline uint32_t SUBX();
+	inline uint32_t ADDB(uint8_t c = 0);
+	inline uint32_t ADDX(uint8_t c = 0);
+	inline uint32_t SUBB(uint8_t b = 0);
+	inline uint32_t SUBX(uint8_t b = 0);
 	inline void ORB();
 	inline void ORW();
 	inline void ANDB();
@@ -329,6 +329,7 @@ protected:
 		} RM;
 	} m_Mod_RM;
 
+	attotime m_reset_time;
 	uint8_t m_timing[200];
 	uint8_t m_ea_timing[200];
 	bool m_halt;
