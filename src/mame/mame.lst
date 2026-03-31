@@ -16336,6 +16336,7 @@ pushmans
 pushmant
 tigeroad
 tigeroadb
+tigeroadba
 tigeroadu
 toramich
 
@@ -17776,6 +17777,8 @@ akamaru
 animaljr
 animaljrj
 animaljrs
+daichuka
+daichukaa
 daimyojn
 daireach
 ddenlovj
@@ -17822,6 +17825,7 @@ mjreach1
 mjreach1a
 mjschuka
 mjswacad
+mjswacads
 mjtenho
 mjxysl
 mmpanic
@@ -17966,6 +17970,7 @@ mjtensina
 mjvegas
 mjvegasa
 mjvegasb
+mjvegasc
 mjyarou
 mjyarou2
 openmj
@@ -18794,6 +18799,16 @@ watrball
 @source:gaelco/ds5002fp_programmer.cpp
 gaelcods
 
+@source:gaelco/futbol3.cpp
+autopapa
+donpepito
+futbol
+futbola
+futbolt
+mueve
+obladi
+susanita
+
 @source:gaelco/gaelco.cpp
 bigkarnk
 bigkarnka
@@ -18891,13 +18906,6 @@ surfplnt30
 surfplnt31
 surfplnt40
 
-@source:gaelco/gaelcof3.cpp
-autopapa
-donpepito
-mueve
-obladi
-susanita
-
 @source:gaelco/gaelcopc.cpp
 rriders
 tokyocop
@@ -18972,8 +18980,8 @@ mastboyod
 @source:gaelco/mastboyo_ms.cpp
 mastboyom
 
-@source:gaelco/radikaldarts.cpp
-radikaldrt
+@source:gaelco/radsys.cpp
+radikald
 
 @source:gaelco/rollext.cpp
 rollext
@@ -20562,6 +20570,13 @@ hpz80unk
 @source:hp/jornada.cpp
 jorn720
 
+@source:huangyeh/hy-268a.cpp
+xycs
+
+@source:huangyeh/hy-9802.cpp
+wlfx
+wlzb
+
 @source:husky/hawk.cpp
 hawk
 
@@ -20627,6 +20642,9 @@ faceoffh
 olihockey
 olihockeya
 unkbubsc
+
+@source:ice/cutrope.cpp
+cutrope
 
 @source:ice/fcourtfev.cpp
 stbasket
@@ -21246,6 +21264,10 @@ xcjnh
 xyddz
 xydn
 zjddz
+
+@source:igs/igspc.cpp
+eztouch
+speeddrv
 
 @source:igs/igspoker.cpp
 chleague
@@ -22217,6 +22239,7 @@ basic31
 basic52
 
 @source:intel/i420ex.cpp
+a486ap4
 entrada
 
 @source:intel/imds2.cpp
@@ -26124,7 +26147,7 @@ abc806
 @source:luxor/abc1600.cpp
 abc1600
 
-@source:luxor/ds90.cpp
+@source:luxor/x37.cpp
 x37
 
 @source:makerbot/replicator.cpp
@@ -32677,6 +32700,7 @@ df_djpkr
 df_djpkra
 dphl
 dphla
+dphlac
 dphljp
 dphlunkb
 drhl
@@ -36525,6 +36549,7 @@ redfoxwp2
 redfoxwp2a
 redhawk
 redhawkb
+redhawkc
 redhawke
 redhawkg
 redhawki
@@ -37147,7 +37172,6 @@ asst128
 486igb21
 486wb6a3
 a433cc
-a486ap4
 a486isa
 a486sio
 a486sp3g
@@ -37519,9 +37543,6 @@ ast6000
 ast611
 ct486
 
-@source:pc/cuttherope.cpp
-cutrope
-
 @source:pc/dawg.cpp
 dawg
 
@@ -37558,10 +37579,6 @@ ibm5160
 @source:pc/ibmpcjr.cpp
 ibmpcjr
 ibmpcjx
-
-@source:pc/igspc.cpp
-eztouch
-speeddrv
 
 @source:pc/iskr103x.cpp
 iskr1030m
@@ -37697,7 +37714,10 @@ so4saw2
 zito4dps
 
 @source:pc/pcipc_via.cpp
+ct6vta2
+ga6vx
 ls5amvp3
+zidabx98
 
 @source:pc/play4texash.cpp
 play4texash
@@ -41170,6 +41190,7 @@ dynamcopc
 dyndeka2
 dyndeka2b
 fvipers
+fvipersa
 fvipersb
 gunblade
 hotd
@@ -44095,10 +44116,6 @@ hprotr8a
 
 @source:skeleton/ht68k.cpp
 ht68k
-
-@source:skeleton/huangyeh_m68k.cpp
-wlfx
-wlzb
 
 @source:skeleton/hudson_poems.cpp
 ewalk2tv
@@ -48654,6 +48671,9 @@ wavesynth
 
 @source:virtual/utdsp563xx.cpp
 utdsp563xx
+
+@source:virtual/utm6502.cpp
+utm6502
 
 @source:visual/v100.cpp
 v100
