@@ -2903,23 +2903,6 @@ ROM_START( batlgr2 )
 	DISK_IMAGE( "bg2_204j", 0, SHA1(7ac100fba39ae0b93980c0af2f0212a731106912) )
 ROM_END
 
-ROM_START( batlgr2j )
-	ROM_REGION64_BE( 0x100000, "user1", 0 )
-	TAITOTZ_BIOS_V152
-
-	ROM_REGION16_LE( 0x40000, "io_cpu", 0 )
-	ROM_LOAD16_BYTE( "e87-03.ic14",  0x000000, 0x020000, CRC(49ae7cd0) SHA1(15f07a6bb2044a85a2139481f1dc95a44520c929) )
-	ROM_LOAD16_BYTE( "e87-04.ic15",  0x000001, 0x020000, CRC(59f8f75f) SHA1(f5595751b10c0033f460114c43f5e2c192fe61f1) )
-
-	ROM_REGION( 0x10000, "sound_cpu", 0 ) // Undumped internal ROM
-	ROM_LOAD( "e68-01.ic7", 0x000000, 0x010000, NO_DUMP )
-
-	// BATTLE GEAR 2 M9005023A VER.2.04J
-	// FUJITSU MPE3064AT NEW HDD FOUND
-	DISK_REGION( "ata:0:hdd" )
-	DISK_IMAGE( "bg2_204j", 0, SHA1(a32d321bf68a056398468532e40d195f12aff91f) )
-ROM_END
-
 ROM_START( batlgr2a )
 	ROM_REGION64_BE( 0x100000, "user1", 0 )
 	TAITOTZ_BIOS_V152
@@ -3034,7 +3017,6 @@ GAME( 1999, landhigh,  taitotz,  landhigh, landhigh, taitotz_state, init_landhig
 GAME( 1999, landhigha, landhigh, landhigh, landhigh, taitotz_state, init_landhigha,ROT0, "Taito", "Landing High Japan (VER.2.02O)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // instruments on sub monitor, requires sub monitor-compatible board
 GAME( 1999, pwrshovl,  taitotz,  taitotz,  pwrshovl, taitotz_state, init_pwrshovl, ROT0, "Taito", "Power Shovel ni Norou!! - Power Shovel Simulator (VER.2.07J)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // 1999/8/5 19:13:35
 GAME( 2000, batlgr2,   taitotz,  taitotz,  batlgr2,  taitotz_state, init_batlgr2,  ROT0, "Taito", "Battle Gear 2 (VER.2.04J)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND | MACHINE_NODEVICE_LAN )
-GAME( 2000, batlgr2j,   taitotz,  taitotz,  batlgr2,  taitotz_state, init_batlgr2,  ROT0, "Taito", "Battle Gear 2j (New HDD)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND | MACHINE_NODEVICE_LAN )
 GAME( 2000, batlgr2a,  batlgr2,  taitotz,  batlgr2,  taitotz_state, init_batlgr2a, ROT0, "Taito", "Battle Gear 2 (VER.2.01J, Side by Side conversion)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND | MACHINE_NODEVICE_LAN ) // "BATTLE GEAR2(S)" on test menu
 GAME( 2000, dendego3,  taitotz,  taitotz,  dendego3, taitotz_state, init_dendego3, ROT0, "Taito", "Densha de GO 3! Tsukin-hen (VER.2.03J)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND ) // 2001/01/27 09:52:56
 GAME( 2001, styphp,    taitotz,  taitotz,  styphp,   taitotz_state, init_styphp,   ROT0, "Taito", "Stunt Typhoon Plus (VER.2.04J)", MACHINE_NOT_WORKING | MACHINE_NO_SOUND )
