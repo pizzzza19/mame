@@ -13,9 +13,8 @@
 
 	TODO
 
-	- trap on boot
 	- tst.w 0xfffffc
-	- SCC interrupt acknowledge
+	- loadsys1 fails with syntax error
 
 */
 
@@ -85,7 +84,7 @@ protected:
 	virtual void machine_reset() override ATTR_COLD;
 
 private:
-	required_device<m68000_base_device> m_cpu;
+	required_device<m68000_musashi_device> m_cpu;
 	required_device<ns32081_device> m_fpu;
 	required_device<hd63450_device> m_dmac;
 	required_device<z8536_device> m_cio;
@@ -119,6 +118,7 @@ private:
 	void cio_pb_w(uint8_t data);
 	uint8_t cio_pc_r();
 	void cio_pc_w(uint8_t data);
+	u8 scc_irq_ack_r();
 	void sasi_int_w(int state) { m_sasi_int = state; }
 
 	void xdck_w(offs_t offset, uint16_t data, uint16_t mem_mask);
@@ -162,6 +162,7 @@ void x37_state::cpu_space_map(address_map &map)
 {
 	map(0xfffff0, 0xffffff).m(m_cpu, FUNC(m68010_device::autovectors_map));
 	map(0xfffff7, 0xfffff7).lr8(NAME([this]() -> u8 { return m_cio->intack_r(); }));
+	map(0xfffff9, 0xfffff9).lr8(NAME([this]() -> u8 { return scc_irq_ack_r(); }));
 }
 
 static INPUT_PORTS_START( x37 )
@@ -207,8 +208,7 @@ uint16_t x37_state::ram_r(offs_t offset, uint16_t mem_mask)
 
 		if (!machine().side_effects_disabled() && at1 && !at0) {
 			// AT1=1, AT0=0: no access
-			m_cpu->set_input_line(M68K_LINE_BUSERROR, ASSERT_LINE);
-			m_cpu->set_input_line(M68K_LINE_BUSERROR, CLEAR_LINE);
+			m_cpu->set_buserror_details(offset << 1, 1, m_cpu->get_fc(), true);
 			logerror("%s: Invalid RAM read at offset %06x (MA %06x, AT1=1, AT0=0)\n", machine().describe_context(), offset<<1, ma);
 		} else if (ma < 0x400000) {
 			if (ACCESSING_BITS_0_7)
@@ -230,8 +230,7 @@ void x37_state::ram_w(offs_t offset, uint16_t data, uint16_t mem_mask)
 
 	if (!machine().side_effects_disabled() && !at0) {
 		// AT0=0: read-only (AT1=0) or no access (AT1=1)
-		m_cpu->set_input_line(M68K_LINE_BUSERROR, ASSERT_LINE);
-		m_cpu->set_input_line(M68K_LINE_BUSERROR, CLEAR_LINE);
+		m_cpu->set_buserror_details(offset << 1, 0, m_cpu->get_fc(), true);
 		logerror("%s: Invalid RAM write at offset %06x (MA %06x, AT1=%d, AT0=0)\n", machine().describe_context(), offset<<1, ma, at1);
 		return;
 	}
@@ -365,6 +364,8 @@ void x37_state::cio_pb_w(uint8_t data)
 	*/
 
 	m_cb = data;
+
+	LOG("%s CB %02x\n", machine().describe_context(), data);
 }
 
 uint8_t x37_state::cio_pc_r()
@@ -413,6 +414,21 @@ void x37_state::cio_pc_w(uint8_t data)
 	m_nvram->cs_w(nvram_cs);
 	m_nvram->di_w(data_out);
 	m_nvram->sk_w(clock);
+}
+
+u8 x37_state::scc_irq_ack_r()
+{
+	for (device_z80daisy_interface *intf : m_scc)
+	{
+		int state = intf->z80daisy_irq_state();
+		if (state & Z80_DAISY_INT)
+		{
+			auto *scc = dynamic_cast<z80scc_device *>(intf);
+			return scc->m1_r();
+		}
+	}
+
+	return m68010_device::autovector(4);
 }
 
 void x37_state::xdck_w(offs_t offset, uint16_t data, uint16_t mem_mask)
@@ -485,6 +501,8 @@ void x37_state::machine_start()
 
 void x37_state::machine_reset()
 {
+	m_cpu->set_emmu_enable(true);
+
 	m_cb = 0xff;
 
 	xdck_w(0, 0, 0xffff);
@@ -503,7 +521,7 @@ void x37_state::x37(machine_config &config)
 
 	HD63450(config, m_dmac, XTAL(20'000'000)/2, m_cpu, AS_PROGRAM);
 	m_dmac->set_burst_clocks(
-		attotime::from_nsec(120),  // ch0
+		attotime::from_nsec(120), // SASI
 		attotime::zero,
 		attotime::zero,
 		attotime::zero
