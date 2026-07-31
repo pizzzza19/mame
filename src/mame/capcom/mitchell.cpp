@@ -1913,7 +1913,7 @@ void spangbl_state::spangbl(machine_config &config)
 	m_msm->set_prescaler_selector(msm5205_device::S96_4B);
 	m_msm->add_route(ALL_OUTPUTS, "mono", 0.50);
 
-	LS157(config, m_adpcm_select, 0);
+	LS157(config, m_adpcm_select);
 	m_adpcm_select->out_callback().set("msm", FUNC(msm5205_device::data_w));
 }
 
@@ -2074,7 +2074,7 @@ ROM_START( 7toitsu )
 	ROM_LOAD( "mg-5.1c",      0x00000, 0x80000, CRC(170332f1) SHA1(bc60f144a224f348fd5b8c0207e18a881f739fc1) )  // banked
 ROM_END
 
-ROM_START( mgakuen2 )
+ROM_START( mgakuen2 ) // 63121-A-2 MADE IN JAPAN CG-2
 	ROM_REGION( 0x50000, "maincpu", 0 )
 	ROM_LOAD( "mg2-xf.1j",    0x00000, 0x08000, CRC(c8165d2d) SHA1(95146e293b2e005c4015590811119a4070dda65b) )
 	ROM_LOAD( "mg2-y.1l",     0x10000, 0x20000, CRC(75bbcc14) SHA1(52ec279fda131c8de06d8c940df12d61ec6881cc) )

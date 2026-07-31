@@ -74,6 +74,7 @@ void generalplus_gpce4_soc_device::device_start()
 	save_item(NAME(m_pwm3_ctrl));
 
 	set_vectorbase(0x4010);
+	set_bootvectorbase(0x4010);
 
 	m_spiregion = 0;
 	m_spisize = 0;
@@ -1019,7 +1020,7 @@ void generalplus_gpce4_soc_device::fiq2_sel_w(u16 data)
 // 15  SPIEN
 // 14  ---
 // 13  LBM
-// 12  SPICS_IO (0 = SPI_CS controlled by I/O, 1 = SPI_CS auto controlled) 
+// 12  SPICS_IO (0 = SPI_CS controlled by I/O, 1 = SPI_CS auto controlled)
 //
 // 11  SPIRST
 // 10  ---

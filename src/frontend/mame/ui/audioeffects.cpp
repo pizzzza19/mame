@@ -18,7 +18,8 @@
 #include "ui/ui.h"
 
 #include "audio_effects/aeffect.h"
-
+#include "input.h"
+#include "sound.h"
 #include "speaker.h"
 
 #include "osdepend.h"

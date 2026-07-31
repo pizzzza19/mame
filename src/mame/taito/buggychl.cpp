@@ -111,6 +111,7 @@ so either 6mhz or 4mhz. Schematics show the jumper set to the 6mhz setting.
 
 #include "emupal.h"
 #include "screen.h"
+#include "sound.h"
 #include "speaker.h"
 
 #include "buggychl.lh"
@@ -824,8 +825,6 @@ void buggychl_state::machine_start()
 	save_item(NAME(m_sky_on));
 	save_item(NAME(m_sprite_color_base));
 	save_item(NAME(m_bg_scrollx));
-
-	m_led.resolve();
 }
 
 void buggychl_state::buggychl(machine_config &config)
@@ -971,5 +970,5 @@ ROM_END
 } // anonymous namespace
 
 
-GAMEL( 1984, buggychl,  0,        buggychl, buggychl, buggychl_state, empty_init, ROT270, "Taito Corporation",                  "Buggy Challenge",          MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE, layout_buggychl )
-GAMEL( 1984, buggychlt, buggychl, buggychl, buggychl, buggychl_state, empty_init, ROT270, "Taito Corporation (Tecfri license)", "Buggy Challenge (Tecfri)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE, layout_buggychl )
+GAMEL( 1984, buggychl,  0,        buggychl, buggychl, buggychl_state, empty_init, ROT270, "Taito",                  "Buggy Challenge",          MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE, layout_buggychl )
+GAMEL( 1984, buggychlt, buggychl, buggychl, buggychl, buggychl_state, empty_init, ROT270, "Taito (Tecfri license)", "Buggy Challenge (Tecfri)", MACHINE_IMPERFECT_SOUND | MACHINE_IMPERFECT_GRAPHICS | MACHINE_NO_COCKTAIL | MACHINE_SUPPORTS_SAVE, layout_buggychl )

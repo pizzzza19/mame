@@ -87,10 +87,10 @@ public:
 		, m_keyboard_io(*this, "keyboard_oct_%d", 1U)
 		, m_encoder(*this, "incremental_controller")
 		, m_trigger_io(*this, "trigger_in")
-		, m_octave_led(*this, "octave_led_%d")
+		, m_octave_led(*this, "octave_led_%d", 0U)
 		, m_lfo_rate_led(*this, "mod_rate_led")
-		, m_program_display(*this, "program_digit_%d")
-		, m_edit_display(*this, "edit_digit_%d")
+		, m_program_display(*this, "program_digit_%d", 0U)
+		, m_edit_display(*this, "edit_digit_%d", 0U)
 		, m_edit_led(*this, "edit_led")
 		, m_kb_track(*this, "kb_track")
 		, m_osc_waveform(*this, "osc_%d_waveform", 1U)
@@ -100,7 +100,8 @@ public:
 		, m_lfo_shape(*this, "lfo_shape")
 		, m_trigger_out(*this, "trigger_out")
 		, m_cv(int(CV::SIZE), 0)
-	{}
+	{
+	}
 
 	void source(machine_config &config) ATTR_COLD;
 
@@ -754,19 +755,6 @@ void source_state::io_map(address_map &map)
 
 void source_state::machine_start()
 {
-	m_octave_led.resolve();
-	m_lfo_rate_led.resolve();
-	m_program_display.resolve();
-	m_edit_display.resolve();
-	m_edit_led.resolve();
-	m_kb_track.resolve();
-	m_osc_waveform.resolve();
-	m_sync.resolve();
-	m_lfo_to_filter.resolve();
-	m_lfo_to_osc.resolve();
-	m_lfo_shape.resolve();
-	m_trigger_out.resolve();
-
 	save_item(NAME(m_octave_hi));
 	save_item(NAME(m_button_row_latch));
 	save_item(NAME(m_encoder_incr));
@@ -994,9 +982,9 @@ INPUT_PORTS_START(source)
 		PORT_CHANGED_MEMBER(DEVICE_SELF, FUNC(source_state::octave_button_pressed), 0x02)
 
 	PORT_START("incremental_controller")
-	PORT_BIT(0xff, 0x00, IPT_POSITIONAL) PORT_POSITIONS(240) PORT_WRAPS
+	PORT_BIT(0xff, 0x00, IPT_POSITIONAL_V) PORT_POSITIONS(240) PORT_WRAPS
 		PORT_SENSITIVITY(25) PORT_KEYDELTA(3)
-		PORT_CODE_DEC(KEYCODE_LEFT) PORT_CODE_INC(KEYCODE_RIGHT) PORT_FULL_TURN_COUNT(240)
+		PORT_CODE_DEC(KEYCODE_DOWN) PORT_CODE_INC(KEYCODE_UP) PORT_FULL_TURN_COUNT(240)
 		PORT_CHANGED_MEMBER(DEVICE_SELF, FUNC(source_state::encoder_moved), 1)
 
 	PORT_START("keyboard_oct_1")
@@ -1046,6 +1034,16 @@ INPUT_PORTS_START(source)
 
 	PORT_START("trigger_in")  // External trigger input (see keyboard_r()).
 	PORT_BIT(0x01, IP_ACTIVE_LOW, IPT_OTHER) PORT_NAME("S TRIG IN") PORT_CODE(KEYCODE_T)
+
+	PORT_START("volume_knob")  // R26 (volume section), 5K, "10% LOG"
+	PORT_ADJUSTER(100, "VOLUME")
+
+	PORT_START("pitch_wheel")  // R229 (wheel section), 10K linear.
+	PORT_BIT(0xff, 50, IPT_PADDLE) PORT_NAME("PITCH WHEEL") PORT_MINMAX(0, 100)
+		PORT_SENSITIVITY(30) PORT_KEYDELTA(15) PORT_CENTERDELTA(30)
+
+	PORT_START("mod_wheel")  // R230 (wheel section), 10K (taper not mentioned in schematic).
+	PORT_ADJUSTER(0, "MOD WHEEL")
 
 	PORT_START("contour_range_0")  // R201 (Board 2), 100K trimpot.
 	PORT_ADJUSTER(50, "FILTER_CONTOUR_RANGE") NETLIST_ANALOG_PORT_CHANGED("source_nl", "cntr_range_0")

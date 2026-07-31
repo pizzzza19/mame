@@ -94,8 +94,8 @@ void haplucky_state::main_map(address_map &map) // TODO: verify everything
 	map(0xec00, 0xec00).nopr(); // watchdog
 	map(0xec80, 0xec83).rw("ppi", FUNC(i8255_device::read), FUNC(i8255_device::write));
 	map(0xee00, 0xee00).lr8(NAME([] () { return 0xff; })); // inputs, avoid reset for now
-//	map(0xef00, 0xef01) sound commands?
-//	map(0xef80, 0xef80) sound NMI?
+//  map(0xef00, 0xef01) sound commands?
+//  map(0xef80, 0xef80) sound NMI?
 	map(0xf000, 0xf0ff).ram().w(m_palette, FUNC(palette_device::write8)).share("palette");
 	map(0xf100, 0xf1ff).ram().w(m_palette, FUNC(palette_device::write8_ext)).share("palette_ext");
 	map(0xf800, 0xffff).ram(); // videoram
@@ -157,7 +157,7 @@ void haplucky_state::haplucky(machine_config &config)
 	audiocpu.set_addrmap(AS_PROGRAM, &haplucky_state::sound_map);
 	audiocpu.set_addrmap(AS_IO, &haplucky_state::sound_io_map);
 
-	i8255_device &ppi(I8255(config, "ppi", 0)); // M5L8255AP-5
+	i8255_device &ppi(I8255(config, "ppi")); // M5L8255AP-5
 	ppi.in_pc_callback().set_ioport("IN0");
 
 	// video hardware
@@ -209,4 +209,4 @@ ROM_END
 } // anonymous namespace
 
 
-GAME( 1985, haplucky, 0, haplucky, haplucky, haplucky_state, empty_init, ROT0, "Taito Corporation", "Happy Lucky!", MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
+GAME( 1985, haplucky, 0, haplucky, haplucky, haplucky_state, empty_init, ROT0, "Taito", "Happy Lucky!", MACHINE_NO_SOUND | MACHINE_NOT_WORKING )
