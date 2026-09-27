@@ -484,6 +484,7 @@ void banprestoms_state::banprestoms(machine_config &config)
 
 	SEI0211(config, m_spritegen, XTAL(14'318'181), m_palette, gfx_banprestoms_spr);
 	m_spritegen->set_pri_callback(FUNC(banprestoms_state::pri_cb));
+    m_spritegen->set_offset(0, +16); // adjust Mario's nose position
 
 	// sound hardware
 	SPEAKER(config, "mono").front_center();
